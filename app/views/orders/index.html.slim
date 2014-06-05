@@ -17,6 +17,14 @@ br
 
 = link_to 'New Order', new_order_path
 
+br
+br
+
+h1 Rsvp Sample
+
+button#rsvp_yes Register me
+#rsvp_yes_count
+
 javascript:
   channel.bind('new', function(order) {
     console.log('a new order about '+order.id+' arrived!');
@@ -28,3 +36,13 @@ javascript:
     console.log($(".order-body").find('tr[data-id="'+order.id+'"]'));
     $(".order-body").find('tr[data-id="'+order.id+'"]').html("<td>" + order.name+ "</td><td> " + order.number + "</td>");
   });
+
+coffee:
+  $ ->
+    console.log 'inside coffeescript'
+    $('#rsvp_yes').bind 'click', (message) =>
+      dispatcher.trigger 'rsvp.new', true
+
+    dispatcher.bind 'new_rsvp', (rsvp_yes_count) =>
+      console.log rsvp_yes_count
+      $('#rsvp_yes_count').html rsvp_yes_count
