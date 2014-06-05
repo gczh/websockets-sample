@@ -1,0 +1,30 @@
+h1 Listing orders
+
+table
+  thead
+    tr
+      th Name
+      th Number
+      th
+      th
+      th
+
+  tbody.order-body
+    - @orders.each do |order|
+      = render 'order_item', order: order
+
+br
+
+= link_to 'New Order', new_order_path
+
+javascript:
+  channel.bind('new', function(order) {
+    console.log('a new order about '+order.id+' arrived!');
+    $(".order-body").append("<tr><td>" + order.name+ "</td><td> " + order.number + "</td></tr>");
+  });
+
+  channel.bind('update', function(order) {
+    console.log('an order with id of ' + order.id + ' has been edited');
+    console.log($(".order-body").find('tr[data-id="'+order.id+'"]'));
+    $(".order-body").find('tr[data-id="'+order.id+'"]').html("<td>" + order.name+ "</td><td> " + order.number + "</td>");
+  });
